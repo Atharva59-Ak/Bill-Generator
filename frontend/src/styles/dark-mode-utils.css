@@ -1,0 +1,252 @@
+/* Dark Mode Utility Classes */
+
+/* Text colors */
+.dark .text-gray-100 { color: #f3f4f6 !important; }
+.dark .text-gray-200 { color: #e5e7eb !important; }
+.dark .text-gray-300 { color: #d1d5db !important; }
+.dark .text-gray-400 { color: #9ca3af !important; }
+.dark .text-gray-500 { color: #93c5fd !important; }
+.dark .text-gray-600 { color: #bfdbfe !important; }
+.dark .text-gray-700 { color: #dbeafe !important; }
+.dark .text-gray-800 { color: #eff6ff !important; }
+.dark .text-gray-900 { color: #f8fafc !important; }
+
+/* Background colors */
+.dark .bg-gray-50 { background-color: #1a1a2e !important; }
+.dark .bg-gray-100 { background-color: #1e3a8a !important; }
+.dark .bg-gray-200 { background-color: #1e40af !important; }
+.dark .bg-gray-300 { background-color: #2563eb !important; }
+.dark .bg-gray-400 { background-color: #3b82f6 !important; }
+.dark .bg-gray-500 { background-color: #60a5fa !important; }
+.dark .bg-gray-600 { background-color: #93c5fd !important; }
+.dark .bg-gray-700 { background-color: #bfdbfe !important; }
+.dark .bg-gray-800 { background-color: #dbeafe !important; }
+.dark .bg-gray-900 { background-color: #eff6ff !important; }
+
+/* Border colors */
+.dark .border-gray-50 { border-color: #1a1a2e !important; }
+.dark .border-gray-100 { border-color: #1e3a8a !important; }
+.dark .border-gray-200 { border-color: #1e40af !important; }
+.dark .border-gray-300 { border-color: #2563eb !important; }
+.dark .border-gray-400 { border-color: #3b82f6 !important; }
+.dark .border-gray-500 { border-color: #60a5fa !important; }
+.dark .border-gray-600 { border-color: #93c5fd !important; }
+.dark .border-gray-700 { border-color: #bfdbfe !important; }
+.dark .border-gray-800 { border-color: #dbeafe !important; }
+.dark .border-gray-900 { border-color: #eff6ff !important; }
+
+/* Hover states */
+.dark .hover\:bg-gray-50:hover { background-color: #1e3a8a !important; }
+.dark .hover\:bg-gray-100:hover { background-color: #1e40af !important; }
+.dark .hover\:bg-gray-200:hover { background-color: #2563eb !important; }
+.dark .hover\:bg-gray-300:hover { background-color: #3b82f6 !important; }
+.dark .hover\:bg-gray-400:hover { background-color: #60a5fa !important; }
+.dark .hover\:bg-gray-500:hover { background-color: #93c5fd !important; }
+.dark .hover\:bg-gray-600:hover { background-color: #bfdbfe !important; }
+.dark .hover\:bg-gray-700:hover { background-color: #dbeafe !important; }
+.dark .hover\:bg-gray-800:hover { background-color: #eff6ff !important; }
+
+/* Focus states */
+.dark .focus\:bg-gray-50:focus { background-color: #1e3a8a !important; }
+.dark .focus\:bg-gray-100:focus { background-color: #1e40af !important; }
+.dark .focus\:bg-gray-200:focus { background-color: #2563eb !important; }
+.dark .focus\:bg-gray-300:focus { background-color: #3b82f6 !important; }
+.dark .focus\:bg-gray-400:focus { background-color: #60a5fa !important; }
+.dark .focus\:bg-gray-500:focus { background-color: #93c5fd !important; }
+.dark .focus\:bg-gray-600:focus { background-color: #bfdbfe !important; }
+.dark .focus\:bg-gray-700:focus { background-color: #dbeafe !important; }
+.dark .focus\:bg-gray-800:focus { background-color: #eff6ff !important; }
+
+/* Enhanced Blue color variants */
+.dark .bg-blue-50 { background-color: rgba(59, 130, 246, 0.15) !important; }
+.dark .bg-blue-100 { background-color: rgba(59, 130, 246, 0.25) !important; }
+.dark .bg-blue-200 { background-color: rgba(59, 130, 246, 0.35) !important; }
+.dark .bg-blue-300 { background-color: rgba(59, 130, 246, 0.45) !important; }
+.dark .bg-blue-400 { background-color: rgba(59, 130, 246, 0.55) !important; }
+.dark .bg-blue-500 { background-color: rgba(59, 130, 246, 0.65) !important; }
+.dark .bg-blue-600 { background-color: rgba(59, 130, 246, 0.75) !important; }
+.dark .bg-blue-700 { background-color: rgba(59, 130, 246, 0.85) !important; }
+.dark .bg-blue-800 { background-color: rgba(59, 130, 246, 0.95) !important; }
+.dark .bg-blue-900 { background-color: rgba(59, 130, 246, 1) !important; }
+
+.dark .hover\:bg-blue-50:hover { background-color: rgba(59, 130, 246, 0.2) !important; }
+.dark .hover\:bg-blue-100:hover { background-color: rgba(59, 130, 246, 0.3) !important; }
+.dark .hover\:bg-blue-200:hover { background-color: rgba(59, 130, 246, 0.4) !important; }
+.dark .hover\:bg-blue-300:hover { background-color: rgba(59, 130, 246, 0.5) !important; }
+.dark .hover\:bg-blue-400:hover { background-color: rgba(59, 130, 246, 0.6) !important; }
+.dark .hover\:bg-blue-500:hover { background-color: rgba(59, 130, 246, 0.7) !important; }
+.dark .hover\:bg-blue-600:hover { background-color: rgba(59, 130, 246, 0.8) !important; }
+.dark .hover\:bg-blue-700:hover { background-color: rgba(59, 130, 246, 0.9) !important; }
+.dark .hover\:bg-blue-800:hover { background-color: rgba(59, 130, 246, 1) !important; }
+
+/* Enhanced Indigo color variants */
+.dark .bg-indigo-50 { background-color: rgba(99, 102, 241, 0.15) !important; }
+.dark .bg-indigo-100 { background-color: rgba(99, 102, 241, 0.25) !important; }
+.dark .bg-indigo-200 { background-color: rgba(99, 102, 241, 0.35) !important; }
+.dark .bg-indigo-300 { background-color: rgba(99, 102, 241, 0.45) !important; }
+.dark .bg-indigo-400 { background-color: rgba(99, 102, 241, 0.55) !important; }
+.dark .bg-indigo-500 { background-color: rgba(99, 102, 241, 0.65) !important; }
+.dark .bg-indigo-600 { background-color: rgba(99, 102, 241, 0.75) !important; }
+.dark .bg-indigo-700 { background-color: rgba(99, 102, 241, 0.85) !important; }
+.dark .bg-indigo-800 { background-color: rgba(99, 102, 241, 0.95) !important; }
+.dark .bg-indigo-900 { background-color: rgba(99, 102, 241, 1) !important; }
+
+.dark .hover\:bg-indigo-50:hover { background-color: rgba(99, 102, 241, 0.2) !important; }
+.dark .hover\:bg-indigo-100:hover { background-color: rgba(99, 102, 241, 0.3) !important; }
+.dark .hover\:bg-indigo-200:hover { background-color: rgba(99, 102, 241, 0.4) !important; }
+.dark .hover\:bg-indigo-300:hover { background-color: rgba(99, 102, 241, 0.5) !important; }
+.dark .hover\:bg-indigo-400:hover { background-color: rgba(99, 102, 241, 0.6) !important; }
+.dark .hover\:bg-indigo-500:hover { background-color: rgba(99, 102, 241, 0.7) !important; }
+.dark .hover\:bg-indigo-600:hover { background-color: rgba(99, 102, 241, 0.8) !important; }
+.dark .hover\:bg-indigo-700:hover { background-color: rgba(99, 102, 241, 0.9) !important; }
+.dark .hover\:bg-indigo-800:hover { background-color: rgba(99, 102, 241, 1) !important; }
+
+/* Green color variants - enhanced */
+.dark .bg-green-50 { background-color: rgba(16, 185, 129, 0.2) !important; }
+.dark .bg-green-100 { background-color: rgba(16, 185, 129, 0.3) !important; }
+.dark .bg-green-200 { background-color: rgba(16, 185, 129, 0.4) !important; }
+.dark .bg-green-300 { background-color: rgba(16, 185, 129, 0.5) !important; }
+.dark .bg-green-400 { background-color: rgba(16, 185, 129, 0.6) !important; }
+.dark .bg-green-500 { background-color: rgba(16, 185, 129, 0.7) !important; }
+.dark .bg-green-600 { background-color: rgba(16, 185, 129, 0.8) !important; }
+.dark .bg-green-700 { background-color: rgba(16, 185, 129, 0.9) !important; }
+.dark .bg-green-800 { background-color: rgba(16, 185, 129, 1) !important; }
+.dark .bg-green-900 { background-color: rgba(16, 185, 129, 1) !important; }
+
+.dark .hover\:bg-green-50:hover { background-color: rgba(16, 185, 129, 0.25) !important; }
+.dark .hover\:bg-green-100:hover { background-color: rgba(16, 185, 129, 0.35) !important; }
+.dark .hover\:bg-green-200:hover { background-color: rgba(16, 185, 129, 0.45) !important; }
+.dark .hover\:bg-green-300:hover { background-color: rgba(16, 185, 129, 0.55) !important; }
+.dark .hover\:bg-green-400:hover { background-color: rgba(16, 185, 129, 0.65) !important; }
+.dark .hover\:bg-green-500:hover { background-color: rgba(16, 185, 129, 0.75) !important; }
+.dark .hover\:bg-green-600:hover { background-color: rgba(16, 185, 129, 0.85) !important; }
+.dark .hover\:bg-green-700:hover { background-color: rgba(16, 185, 129, 0.95) !important; }
+.dark .hover\:bg-green-800:hover { background-color: rgba(16, 185, 129, 1) !important; }
+
+/* Yellow color variants - enhanced */
+.dark .bg-yellow-50 { background-color: rgba(245, 158, 11, 0.2) !important; }
+.dark .bg-yellow-100 { background-color: rgba(245, 158, 11, 0.3) !important; }
+.dark .bg-yellow-200 { background-color: rgba(245, 158, 11, 0.4) !important; }
+.dark .bg-yellow-300 { background-color: rgba(245, 158, 11, 0.5) !important; }
+.dark .bg-yellow-400 { background-color: rgba(245, 158, 11, 0.6) !important; }
+.dark .bg-yellow-500 { background-color: rgba(245, 158, 11, 0.7) !important; }
+.dark .bg-yellow-600 { background-color: rgba(245, 158, 11, 0.8) !important; }
+.dark .bg-yellow-700 { background-color: rgba(245, 158, 11, 0.9) !important; }
+.dark .bg-yellow-800 { background-color: rgba(245, 158, 11, 1) !important; }
+.dark .bg-yellow-900 { background-color: rgba(245, 158, 11, 1) !important; }
+
+.dark .hover\:bg-yellow-50:hover { background-color: rgba(245, 158, 11, 0.25) !important; }
+.dark .hover\:bg-yellow-100:hover { background-color: rgba(245, 158, 11, 0.35) !important; }
+.dark .hover\:bg-yellow-200:hover { background-color: rgba(245, 158, 11, 0.45) !important; }
+.dark .hover\:bg-yellow-300:hover { background-color: rgba(245, 158, 11, 0.55) !important; }
+.dark .hover\:bg-yellow-400:hover { background-color: rgba(245, 158, 11, 0.65) !important; }
+.dark .hover\:bg-yellow-500:hover { background-color: rgba(245, 158, 11, 0.75) !important; }
+.dark .hover\:bg-yellow-600:hover { background-color: rgba(245, 158, 11, 0.85) !important; }
+.dark .hover\:bg-yellow-700:hover { background-color: rgba(245, 158, 11, 0.95) !important; }
+.dark .hover\:bg-yellow-800:hover { background-color: rgba(245, 158, 11, 1) !important; }
+
+/* Red color variants - enhanced */
+.dark .bg-red-50 { background-color: rgba(239, 68, 68, 0.2) !important; }
+.dark .bg-red-100 { background-color: rgba(239, 68, 68, 0.3) !important; }
+.dark .bg-red-200 { background-color: rgba(239, 68, 68, 0.4) !important; }
+.dark .bg-red-300 { background-color: rgba(239, 68, 68, 0.5) !important; }
+.dark .bg-red-400 { background-color: rgba(239, 68, 68, 0.6) !important; }
+.dark .bg-red-500 { background-color: rgba(239, 68, 68, 0.7) !important; }
+.dark .bg-red-600 { background-color: rgba(239, 68, 68, 0.8) !important; }
+.dark .bg-red-700 { background-color: rgba(239, 68, 68, 0.9) !important; }
+.dark .bg-red-800 { background-color: rgba(239, 68, 68, 1) !important; }
+.dark .bg-red-900 { background-color: rgba(239, 68, 68, 1) !important; }
+
+.dark .hover\:bg-red-50:hover { background-color: rgba(239, 68, 68, 0.25) !important; }
+.dark .hover\:bg-red-100:hover { background-color: rgba(239, 68, 68, 0.35) !important; }
+.dark .hover\:bg-red-200:hover { background-color: rgba(239, 68, 68, 0.45) !important; }
+.dark .hover\:bg-red-300:hover { background-color: rgba(239, 68, 68, 0.55) !important; }
+.dark .hover\:bg-red-400:hover { background-color: rgba(239, 68, 68, 0.65) !important; }
+.dark .hover\:bg-red-500:hover { background-color: rgba(239, 68, 68, 0.75) !important; }
+.dark .hover\:bg-red-600:hover { background-color: rgba(239, 68, 68, 0.85) !important; }
+.dark .hover\:bg-red-700:hover { background-color: rgba(239, 68, 68, 0.95) !important; }
+.dark .hover\:bg-red-800:hover { background-color: rgba(239, 68, 68, 1) !important; }
+
+/* Special utility classes */
+.dark .bg-white\/95 { background-color: rgba(26, 26, 46, 0.95) !important; }
+.dark .bg-white\/80 { background-color: rgba(26, 26, 46, 0.8) !important; }
+.dark .bg-white\/50 { background-color: rgba(26, 26, 46, 0.5) !important; }
+.dark .bg-white\/30 { background-color: rgba(26, 26, 46, 0.3) !important; }
+.dark .bg-white\/20 { background-color: rgba(26, 26, 46, 0.2) !important; }
+.dark .bg-white\/10 { background-color: rgba(26, 26, 46, 0.1) !important; }
+
+.dark .bg-blue-50\/80 { background-color: rgba(59, 130, 246, 0.08) !important; }
+.dark .bg-blue-50\/30 { background-color: rgba(59, 130, 246, 0.03) !important; }
+.dark .bg-blue-100\/50 { background-color: rgba(59, 130, 246, 0.1) !important; }
+.dark .bg-blue-100\/30 { background-color: rgba(59, 130, 246, 0.06) !important; }
+
+.dark .bg-green-50\/80 { background-color: rgba(16, 185, 129, 0.08) !important; }
+.dark .bg-green-50\/30 { background-color: rgba(16, 185, 129, 0.03) !important; }
+.dark .bg-green-100\/50 { background-color: rgba(16, 185, 129, 0.1) !important; }
+.dark .bg-green-100\/30 { background-color: rgba(16, 185, 129, 0.06) !important; }
+
+.dark .bg-indigo-50\/80 { background-color: rgba(99, 102, 241, 0.08) !important; }
+.dark .bg-indigo-50\/30 { background-color: rgba(99, 102, 241, 0.03) !important; }
+.dark .bg-indigo-100\/50 { background-color: rgba(99, 102, 241, 0.1) !important; }
+.dark .bg-indigo-100\/30 { background-color: rgba(99, 102, 241, 0.06) !important; }
+
+/* Border utilities */
+.dark .border-blue-100\/50 { border-color: rgba(59, 130, 246, 0.3) !important; }
+.dark .border-blue-100\/30 { border-color: rgba(59, 130, 246, 0.18) !important; }
+.dark .border-green-100\/50 { border-color: rgba(16, 185, 129, 0.3) !important; }
+.dark .border-green-100\/30 { border-color: rgba(16, 185, 129, 0.18) !important; }
+.dark .border-indigo-100\/50 { border-color: rgba(99, 102, 241, 0.3) !important; }
+.dark .border-indigo-100\/30 { border-color: rgba(99, 102, 241, 0.18) !important; }
+
+/* Enhanced gradient overrides for dark mode */
+.dark .from-gray-50 { --tw-gradient-from: #0a0a0f !important; }
+.dark .via-white { --tw-gradient-via: #1a1a2e !important; }
+.dark .to-blue-50 { --tw-gradient-to: #1e3a8a !important; }
+
+.dark .from-blue-50 { --tw-gradient-from: rgba(59, 130, 246, 0.15) !important; }
+.dark .via-indigo-50 { --tw-gradient-via: rgba(99, 102, 241, 0.15) !important; }
+.dark .to-blue-50 { --tw-gradient-to: rgba(59, 130, 246, 0.15) !important; }
+
+.dark .from-blue-50\/80 { --tw-gradient-from: rgba(59, 130, 246, 0.08) !important; }
+.dark .via-indigo-50\/80 { --tw-gradient-via: rgba(99, 102, 241, 0.08) !important; }
+.dark .to-blue-50\/80 { --tw-gradient-to: rgba(59, 130, 246, 0.08) !important; }
+
+/* Component-specific overrides */
+.dark .nav-link {
+  color: var(--foreground) !important;
+}
+
+.dark .nav-link:hover {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+.dark .card,
+.dark .bg-white {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border-color: var(--border) !important;
+}
+
+/* Ensure proper contrast for all text elements */
+.dark * {
+  color-scheme: dark;
+}
+
+/* Fix for any remaining light backgrounds */
+.dark .bg-white,
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: var(--card) !important;
+}
+
+/* Fix for any remaining light text */
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: var(--foreground) !important;
+}
+
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: var(--muted-foreground) !important;
+}

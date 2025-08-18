@@ -433,6 +433,16 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
           >
             👁️ Preview
           </button>
+          <button
+            onClick={() => setActiveTab('side-by-side')}
+            className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+              activeTab === 'side-by-side'
+                ? 'bg-white text-blue-600 shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            ⚡ Edit & Preview
+          </button>
         </div>
       </div>
 
@@ -511,6 +521,219 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
               </div>
             </Card>
           )}
+        </div>
+      )}
+
+      {/* Side-by-Side Layout */}
+      {activeTab === 'side-by-side' && (
+        <div className="flex flex-row space-x-4">
+          <div className="w-1/2">
+            {/* Manual Entry Form in Side-by-Side Mode */}
+            <Card className="p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Edit Invoice</h3>
+              {/* Form Content - Same as Manual Tab */}
+              <div className="space-y-6">
+                {/* Customer Information */}
+                <div>
+                  <h4 className="text-lg font-medium text-gray-900 mb-3">Customer Information</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="customer_name">Customer Name</Label>
+                      <Input
+                        id="customer_name"
+                        value={invoiceData.customer.name}
+                        onChange={(e) => updateCustomerData('name', e.target.value)}
+                        placeholder="Enter customer name"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="customer_email">Email</Label>
+                      <Input
+                        id="customer_email"
+                        type="email"
+                        value={invoiceData.customer.email}
+                        onChange={(e) => updateCustomerData('email', e.target.value)}
+                        placeholder="customer@example.com"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="customer_address">Address</Label>
+                      <Input
+                        id="customer_address"
+                        value={invoiceData.customer.address}
+                        onChange={(e) => updateCustomerData('address', e.target.value)}
+                        placeholder="Street address"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="customer_city">City</Label>
+                      <Input
+                        id="customer_city"
+                        value={invoiceData.customer.city}
+                        onChange={(e) => updateCustomerData('city', e.target.value)}
+                        placeholder="City"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="customer_state">State</Label>
+                      <Input
+                        id="customer_state"
+                        value={invoiceData.customer.state}
+                        onChange={(e) => updateCustomerData('state', e.target.value)}
+                        placeholder="State/Province"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="customer_zip">ZIP Code</Label>
+                      <Input
+                        id="customer_zip"
+                        value={invoiceData.customer.zip_code}
+                        onChange={(e) => updateCustomerData('zip_code', e.target.value)}
+                        placeholder="ZIP/Postal Code"
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Invoice Items */}
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <h4 className="text-lg font-medium text-gray-900">Invoice Items</h4>
+                    <Button
+                      onClick={addItem}
+                      className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium"
+                    >
+                      + Add Item
+                    </Button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {invoiceData.items.map((item, index) => (
+                      <div key={index} className="grid grid-cols-12 gap-4 items-end p-4 bg-gray-50 rounded-lg">
+                        <div className="col-span-5">
+                          <Label>Description</Label>
+                          <Input
+                            value={item.description}
+                            onChange={(e) => updateItem(index, 'description', e.target.value)}
+                            placeholder="Service or product description"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <Label>Quantity</Label>
+                          <Input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
+                            min="1"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <Label>Unit Price</Label>
+                          <Input
+                            type="number"
+                            value={item.unit_price}
+                            onChange={(e) => updateItem(index, 'unit_price', parseFloat(e.target.value) || 0)}
+                            min="0"
+                            step="0.01"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                          <Label>Total</Label>
+                          <div className="bg-gray-100 px-3 py-2 rounded-md mt-1 text-right font-medium">
+                            ₹{item.total.toFixed(2)}
+                          </div>
+                        </div>
+                        <div className="col-span-1 flex justify-center">
+                          <Button
+                            onClick={() => removeItem(index)}
+                            className="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg"
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Additional Details */}
+                <div>
+                  <h4 className="text-lg font-medium text-gray-900 mb-3">Additional Details</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="tax_rate">Tax Rate (%)</Label>
+                      <Input
+                        id="tax_rate"
+                        type="number"
+                        value={invoiceData.tax_rate * 100}
+                        onChange={(e) => updateInvoiceData('tax_rate', parseFloat(e.target.value) / 100 || 0)}
+                        placeholder="Tax rate percentage"
+                        className="mt-1"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="due_days">Payment Due (Days)</Label>
+                      <Input
+                        id="due_days"
+                        type="number"
+                        value={invoiceData.due_days}
+                        onChange={(e) => updateInvoiceData('due_days', parseInt(e.target.value) || 0)}
+                        placeholder="Days until payment due"
+                        className="mt-1"
+                        min="1"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+          
+          {/* Invoice Summary for Side-by-Side View */}
+          <div className="mt-6">
+            <Card className="p-6 sticky top-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Invoice Summary</h3>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Subtotal:</span>
+                  <span className="font-medium">₹{calculateSubtotal().toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Tax ({(invoiceData.tax_rate * 100).toFixed(1)}%):</span>
+                  <span className="font-medium">₹{calculateTax().toFixed(2)}</span>
+                </div>
+                <div className="border-t pt-3">
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>Total:</span>
+                    <span className="text-blue-600">₹{calculateTotal().toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleSubmit}
+                disabled={isLoading || !invoiceData.customer.name}
+                className="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold"
+              >
+                {isLoading ? 'Creating...' : 'Create Invoice'}
+              </Button>
+            </Card>
+          </div>
         </div>
       )}
 
@@ -740,9 +963,9 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
         </div>
       )}
 
-      {activeTab === 'preview' && (
-        <Card className="p-8">
-          <div className="max-w-3xl mx-auto">
+      {(activeTab === 'preview' || activeTab === 'side-by-side') && (
+        <Card className={`p-8 ${activeTab === 'side-by-side' ? 'w-1/2' : 'w-full'}`}>
+          <div className={`${activeTab === 'side-by-side' ? 'max-w-full' : 'max-w-3xl mx-auto'}`}>
             <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">Invoice Preview</h3>
             
             {/* Export Buttons */}
