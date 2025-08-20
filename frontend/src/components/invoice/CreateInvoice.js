@@ -22,24 +22,66 @@ const getCornerDesign = (cornerType, position, color) => {
   const baseStyles = 'decorative-corner pointer-events-none transition-opacity duration-300';
   const opacity = cornerType === 'minimal' ? 'opacity-10' : 'opacity-15';
   
+  // Define color gradients based on the color parameter
+  const getColorGradient = (color, start, end) => {
+    const colorMap = {
+      'blue': ['#93c5fd', '#3b82f6'],
+      'red': ['#fca5a5', '#ef4444'],
+      'green': ['#86efac', '#22c55e'],
+      'yellow': ['#fde68a', '#f59e0b'],
+      'purple': ['#d8b4fe', '#a855f7'],
+      'pink': ['#f9a8d4', '#ec4899'],
+      'indigo': ['#a5b4fc', '#6366f1'],
+      'gray': ['#d1d5db', '#6b7280'],
+      'teal': ['#5eead4', '#14b8a6']
+    };
+    
+    // Default to blue if color not found
+    const [fromColor, toColor] = colorMap[color] || colorMap['blue'];
+    return `from-[${fromColor}] to-[${toColor}]`;
+  };
+  
+  const styleObj = {
+    className: `${baseStyles} ${opacity} bg-gradient-to-br clip-${position}`,
+    style: {}
+  };
+  
   switch (cornerType) {
     case 'ornate':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-yellow-300 to-yellow-500 clip-ornate-${position} hover:opacity-25`;
+      styleObj.className += ` clip-ornate-${position} hover:opacity-25`;
+      styleObj.style.background = 'linear-gradient(to bottom right, #fde68a, #f59e0b)';
+      break;
     case 'baroque':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-purple-300 to-purple-500 clip-baroque-${position} hover:opacity-25`;
+      styleObj.className += ` clip-baroque-${position} hover:opacity-25`;
+      styleObj.style.background = 'linear-gradient(to bottom right, #d8b4fe, #a855f7)';
+      break;
     case 'diamond':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-${color}-300 to-${color}-500 transform rotate-45 origin-center hover:opacity-25`;
+      styleObj.className += ` transform rotate-45 origin-center hover:opacity-25`;
+      styleObj.style.background = `linear-gradient(to bottom right, var(--color-${color}-300, #93c5fd), var(--color-${color}-500, #3b82f6))`;
+      break;
     case 'artdeco':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-gray-400 to-gray-600 clip-artdeco-${position} hover:opacity-25`;
+      styleObj.className += ` clip-artdeco-${position} hover:opacity-25`;
+      styleObj.style.background = 'linear-gradient(to bottom right, #d1d5db, #6b7280)';
+      break;
     case 'nature':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-green-300 to-green-500 clip-nature-${position} hover:opacity-25`;
+      styleObj.className += ` clip-nature-${position} hover:opacity-25`;
+      styleObj.style.background = 'linear-gradient(to bottom right, #86efac, #22c55e)';
+      break;
     case 'geometric':
-      return `${baseStyles} ${opacity} bg-gradient-to-br from-${color}-300 to-${color}-500 clip-geometric-${position} hover:opacity-25`;
+      styleObj.className += ` clip-geometric-${position} hover:opacity-25`;
+      styleObj.style.background = `linear-gradient(to bottom right, var(--color-${color}-300, #93c5fd), var(--color-${color}-500, #3b82f6))`;
+      break;
     case 'minimal':
-      return `${baseStyles} opacity-5 bg-gradient-to-br from-${color}-100 to-${color}-300 rounded-full hover:opacity-10`;
+      styleObj.className = `${baseStyles} opacity-5 rounded-full hover:opacity-10`;
+      styleObj.style.background = `linear-gradient(to bottom right, var(--color-${color}-100, #dbeafe), var(--color-${color}-300, #93c5fd))`;
+      break;
     default:
-      return `${baseStyles} opacity-10 bg-gradient-to-br from-${color}-200 to-${color}-400 rounded-lg hover:opacity-15`;
+      styleObj.className = `${baseStyles} opacity-10 rounded-lg hover:opacity-15`;
+      styleObj.style.background = `linear-gradient(to bottom right, var(--color-${color}-200, #bfdbfe), var(--color-${color}-400, #60a5fa))`;
+      break;
   }
+  
+  return styleObj;
 };
 
 const CreateInvoice = ({ user, selectedTemplate }) => {
@@ -454,7 +496,7 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
             <div className="p-4 bg-blue-50 border-blue-200 border rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className={`w-4 h-4 rounded-full bg-${selectedTemplate.color}-500`}></div>
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: `var(--color-${selectedTemplate.color}-500, #3b82f6)` }}></div>
                   <span className="font-medium text-blue-900">
                     {selectedTemplate.name}
                   </span>
@@ -985,18 +1027,37 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
             </div>
             
             {/* Invoice Preview with ID */}
-            <div id="invoice-preview" className={`bg-white border-2 ${selectedTemplate ? `border-${selectedTemplate.color}-200` : 'border-gray-200'} rounded-lg p-8 shadow-lg relative overflow-hidden min-h-[1123px]`} style={{minHeight: '297mm', width: '210mm', maxWidth: '210mm', margin: '0 auto', boxSizing: 'border-box'}}>
+            <div id="invoice-preview" className="bg-white border-2 rounded-lg p-8 shadow-lg relative overflow-hidden min-h-[1123px]" style={{
+              minHeight: '297mm', 
+              width: '210mm', 
+              maxWidth: '210mm', 
+              margin: '0 auto', 
+              boxSizing: 'border-box',
+              borderColor: selectedTemplate ? `var(--color-${selectedTemplate.color}-200, #e5e7eb)` : '#e5e7eb'
+            }}>
               {/* Decorative Corners */}
-              {selectedTemplate && (
-                <>
-                  {/* Top Left Corner */}
-                  <div className={`absolute top-0 left-0 w-16 h-16 ${getCornerDesign(selectedTemplate.corners, 'top-left', selectedTemplate.color)}`}></div>
-                  {/* Top Right Corner */}
-                  <div className={`absolute top-0 right-0 w-16 h-16 ${getCornerDesign(selectedTemplate.corners, 'top-right', selectedTemplate.color)}`}></div>
-                  {/* Bottom Left Corner */}
-                  <div className={`absolute bottom-0 left-0 w-16 h-16 ${getCornerDesign(selectedTemplate.corners, 'bottom-left', selectedTemplate.color)}`}></div>
-                  {/* Bottom Right Corner */}
-                  <div className={`absolute bottom-0 right-0 w-16 h-16 ${getCornerDesign(selectedTemplate.corners, 'bottom-right', selectedTemplate.color)}`}></div>
+                {selectedTemplate && (
+                  <>
+                    {/* Top Left Corner */}
+                    {(() => {
+                      const cornerStyle = getCornerDesign(selectedTemplate.corners, 'top-left', selectedTemplate.color);
+                      return <div className={`absolute top-0 left-0 w-16 h-16 ${cornerStyle.className}`} style={cornerStyle.style}></div>;
+                    })()}
+                    {/* Top Right Corner */}
+                    {(() => {
+                      const cornerStyle = getCornerDesign(selectedTemplate.corners, 'top-right', selectedTemplate.color);
+                      return <div className={`absolute top-0 right-0 w-16 h-16 ${cornerStyle.className}`} style={cornerStyle.style}></div>;
+                    })()}
+                    {/* Bottom Left Corner */}
+                    {(() => {
+                      const cornerStyle = getCornerDesign(selectedTemplate.corners, 'bottom-left', selectedTemplate.color);
+                      return <div className={`absolute bottom-0 left-0 w-16 h-16 ${cornerStyle.className}`} style={cornerStyle.style}></div>;
+                    })()}
+                    {/* Bottom Right Corner */}
+                    {(() => {
+                      const cornerStyle = getCornerDesign(selectedTemplate.corners, 'bottom-right', selectedTemplate.color);
+                      return <div className={`absolute bottom-0 right-0 w-16 h-16 ${cornerStyle.className}`} style={cornerStyle.style}></div>;
+                    })()}
                 </>
               )}
               
@@ -1016,10 +1077,17 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
                   {/* Header */}
                   <div className="flex justify-between items-start mb-8">
                     <div>
-                      <h1 className={`text-3xl font-bold ${selectedTemplate?.style === 'luxury' ? 'font-serif' : 'font-sans'} ${selectedTemplate ? `text-${selectedTemplate.color}-900` : 'text-gray-900'}`}>INVOICE</h1>
+                      <h1 className={`text-3xl font-bold ${selectedTemplate?.style === 'luxury' ? 'font-serif' : 'font-sans'}`} 
+                          style={{ color: selectedTemplate ? `var(--color-${selectedTemplate.color}-900, #1f2937)` : '#1f2937' }}>
+                        INVOICE
+                      </h1>
                       <p className="text-gray-600 mt-2">Invoice #INV-001</p>
                       {selectedTemplate?.corners === 'ornate' && (
-                        <div className="mt-2 h-1 w-24 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded"></div>
+                        <div className="mt-2 h-1 w-24 rounded" 
+                             style={{ background: selectedTemplate ? 
+                               `linear-gradient(to right, var(--color-${selectedTemplate.color}-500, #3b82f6), var(--color-${selectedTemplate.color}-600, #2563eb))` : 
+                               'linear-gradient(to right, #3b82f6, #2563eb)' 
+                             }}></div>
                       )}
                     </div>
                     <div className="text-right">
@@ -1034,7 +1102,14 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
                           />
                         </div>
                       ) : (
-                        <div className={`w-16 h-16 ${selectedTemplate ? `bg-${selectedTemplate.color}-600` : (selectedTemplate?.brand_color || businessProfile?.brand_color) ? '' : 'bg-blue-600'} ${selectedTemplate?.style === 'luxury' ? 'rounded-none' : 'rounded-lg'} flex items-center justify-center mb-4 shadow-lg relative`} style={(selectedTemplate?.brand_color || businessProfile?.brand_color) ? { backgroundColor: (selectedTemplate?.brand_color || businessProfile?.brand_color) } : {}}>
+                        <div className={`w-16 h-16 ${selectedTemplate?.style === 'luxury' ? 'rounded-none' : 'rounded-lg'} flex items-center justify-center mb-4 shadow-lg relative`} 
+                             style={{
+                               backgroundColor: (selectedTemplate?.brand_color || businessProfile?.brand_color) ? 
+                                 (selectedTemplate?.brand_color || businessProfile?.brand_color) : 
+                                 selectedTemplate ? 
+                                   `var(--color-${selectedTemplate.color}-600, #2563eb)` : 
+                                   '#2563eb'
+                             }}>
                           {selectedTemplate?.corners === 'diamond' && (
                             <div className="absolute inset-1 border-2 border-white/30 transform rotate-45"></div>
                           )}
@@ -1158,7 +1233,13 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
                           className="w-8 h-8 object-contain"
                         />
                       ) : (
-                        <div className={`w-8 h-8 ${selectedTemplate ? `bg-${selectedTemplate.color}-600` : (selectedTemplate?.brand_color || businessProfile?.brand_color) ? '' : 'bg-blue-600'} rounded-lg flex items-center justify-center shadow-sm`} style={(selectedTemplate?.brand_color || businessProfile?.brand_color) ? { backgroundColor: (selectedTemplate?.brand_color || businessProfile?.brand_color) } : {}}>
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm" style={{
+                          backgroundColor: (selectedTemplate?.brand_color || businessProfile?.brand_color) ? 
+                            (selectedTemplate?.brand_color || businessProfile?.brand_color) : 
+                            selectedTemplate ? 
+                              `var(--color-${selectedTemplate.color}-600, #2563eb)` : 
+                              '#2563eb'
+                        }}>
                           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"/>
                           </svg>
@@ -1174,7 +1255,9 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
                         <>
                           {(selectedTemplate?.business_data?.email || businessProfile?.email) && (
                             <p className="text-sm text-gray-700">
-                              📧 <a href={`mailto:${selectedTemplate?.business_data?.email || businessProfile?.email}`} className={`${selectedTemplate ? `text-${selectedTemplate.color}-600 hover:text-${selectedTemplate.color}-700` : 'text-blue-600 hover:text-blue-700'} font-medium transition-colors duration-200`}>
+                              📧 <a href={`mailto:${selectedTemplate?.business_data?.email || businessProfile?.email}`} className="font-medium transition-colors duration-200" style={{
+                                color: selectedTemplate ? `var(--color-${selectedTemplate.color}-600, #2563eb)` : '#2563eb',
+                              }}>
                                 {selectedTemplate?.business_data?.email || businessProfile?.email}
                               </a>
                             </p>
@@ -1202,7 +1285,9 @@ const CreateInvoice = ({ user, selectedTemplate }) => {
                       ) : (
                         <>
                           <p className="text-sm text-gray-700">
-                            📧 <a href="mailto:support@invoiceforge.com" className={`${selectedTemplate ? `text-${selectedTemplate.color}-600 hover:text-${selectedTemplate.color}-700` : 'text-blue-600 hover:text-blue-700'} font-medium transition-colors duration-200`}>
+                            📧 <a href="mailto:support@invoiceforge.com" className="font-medium transition-colors duration-200" style={{
+                              color: selectedTemplate ? `var(--color-${selectedTemplate.color}-600, #2563eb)` : '#2563eb',
+                            }}>
                               support@invoiceforge.com
                             </a>
                           </p>

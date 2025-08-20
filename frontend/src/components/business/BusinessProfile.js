@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { supabase } from '../../lib/supabaseClient';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -40,10 +41,17 @@ const BusinessProfile = () => {
 
   const loadBusinessProfile = async () => {
     try {
-      // Check if user is authenticated
-      const authToken = localStorage.getItem('auth_token');
+      // Check if user is authenticated using Supabase session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        console.log('No active Supabase session found');
+        return;
+      }
+
+      // Get auth token from Supabase session
+      const authToken = session.access_token;
       if (!authToken) {
-        console.log('No authentication token found');
+        console.log('No authentication token found in session');
         return;
       }
 
@@ -62,7 +70,8 @@ const BusinessProfile = () => {
     } catch (error) {
       console.log('No existing business profile found or authentication failed:', error.response?.status);
       if (error.response?.status === 401) {
-        // Clear invalid token
+        // Clear invalid token and sign out from Supabase
+        await supabase.auth.signOut();
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_data');
       }
@@ -93,10 +102,18 @@ const BusinessProfile = () => {
   };
 
   const handleSave = async () => {
-    // Check if user is authenticated
-    const authToken = localStorage.getItem('auth_token');
-    if (!authToken) {
+    // Check if user is authenticated using Supabase session
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
       setMessage('❌ Please sign in first to save your business profile.');
+      setTimeout(() => setMessage(''), 4000);
+      return;
+    }
+
+    // Get auth token from Supabase session
+    const authToken = session.access_token;
+    if (!authToken) {
+      setMessage('❌ Authentication error. Please sign in again.');
       setTimeout(() => setMessage(''), 4000);
       return;
     }
@@ -125,7 +142,8 @@ const BusinessProfile = () => {
       
       if (error.response?.status === 401) {
         errorMessage = '❌ Please sign in to save your business profile.';
-        // Clear invalid token
+        // Clear invalid token and sign out from Supabase
+        await supabase.auth.signOut();
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_data');
       } else if (error.response?.data?.detail) {
@@ -148,10 +166,18 @@ const BusinessProfile = () => {
       return;
     }
 
-    // Check if user is authenticated
-    const authToken = localStorage.getItem('auth_token');
-    if (!authToken) {
+    // Check if user is authenticated using Supabase session
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
       setMessage('❌ Please sign in first to generate a business template.');
+      setTimeout(() => setMessage(''), 4000);
+      return;
+    }
+
+    // Get auth token from Supabase session
+    const authToken = session.access_token;
+    if (!authToken) {
+      setMessage('❌ Authentication error. Please sign in again.');
       setTimeout(() => setMessage(''), 4000);
       return;
     }
@@ -167,7 +193,12 @@ const BusinessProfile = () => {
       console.log('Saving business profile:', businessData);
       
       // Save business profile first
-      const saveResponse = await axios.post(`${API}/business/profile`, businessData);
+      const saveResponse = await axios.post(`${API}/business/profile`, businessData, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
       console.log('Business profile saved:', saveResponse.data);
       
       // Then generate template
@@ -200,7 +231,8 @@ const BusinessProfile = () => {
         errorMessage = '❌ Please save your business profile first before generating a template.';
       } else if (error.response?.status === 401) {
         errorMessage = '❌ Please sign in to generate a business template.';
-        // Clear invalid token
+        // Clear invalid token and sign out from Supabase
+        await supabase.auth.signOut();
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_data');
       } else if (error.response?.status === 500) {

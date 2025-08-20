@@ -5,6 +5,11 @@ import "./styles/dark-mode.css";
 import "./styles/dark-mode-utils.css";
 import { initializeTheme } from "./utils/theme-init";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import ProtectedRoute from "./components/routing/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
+import AuthCallback from "./pages/AuthCallback";
+import { useAuth } from "./context/AuthContext";
 import AIChatbot from "./components/chatbot/AIChatbot";
 import axios from "axios";
 import AuthModal from "./components/auth/AuthModal";
@@ -17,6 +22,7 @@ import InvoicesPage from "./components/invoices/InvoicesPage";
 import BusinessProfile from "./components/business/BusinessProfile";
 import EnhancedInvoicesPage from "./components/invoices/EnhancedInvoicesPage";
 import { ThemeToggle } from "./components/ui/theme-toggle";
+import { supabase } from "./lib/supabaseClient";
 
 // CSS for fixed theme toggle
 const fixedThemeToggleStyle = {
@@ -41,6 +47,7 @@ const API = `${BACKEND_URL}/api`;
 // Header Component with improved mobile navigation
 const Header = ({ user, onAuthClick, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const displayName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || 'User';
 
   return (
     <header className="bg-white/95 dark:bg-card/95 backdrop-blur-md shadow-lg border-b border-gray-100 dark:border-border sticky top-0 z-50">
@@ -134,13 +141,11 @@ const Header = ({ user, onAuthClick, onLogout }) => {
               <>
                 <div className="hidden lg:flex items-center space-x-3 bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-indigo-50/80 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-indigo-500/20 backdrop-blur-sm px-4 py-3 rounded-2xl border border-blue-100/50 dark:border-blue-500/30 shadow-sm">
                   <div className="w-9 h-9 bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-700 rounded-full flex items-center justify-center shadow-md ring-2 ring-white">
-                    <span className="text-white font-bold text-sm">
-                      {user.name?.charAt(0) || 'U'}
-                    </span>
+                    <span className="text-white font-bold text-sm">{displayName.charAt(0)}</span>
                   </div>
                   <div className="flex flex-col leading-none">
                     <span className="text-gray-900 dark:text-foreground font-semibold text-sm">Welcome back!</span>
-                    <span className="text-blue-600 dark:text-blue-400 font-medium text-xs mt-0.5">{user.name?.split(' ')[0] || 'User'}</span>
+                    <span className="text-blue-600 dark:text-blue-400 font-medium text-xs mt-0.5">{displayName.split(' ')[0]}</span>
                   </div>
                 </div>
                 <button 
@@ -199,13 +204,11 @@ const Header = ({ user, onAuthClick, onLogout }) => {
               {user && (
                 <div className="flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-500/20 dark:to-purple-500/20 p-4 rounded-xl border border-blue-100 dark:border-blue-500/30 mb-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
-                    <span className="text-white font-bold text-sm">
-                      {user.name?.charAt(0) || 'U'}
-                    </span>
+                    <span className="text-white font-bold text-sm">{displayName.charAt(0)}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-gray-900 dark:text-foreground font-semibold text-sm">Welcome back!</span>
-                    <span className="text-blue-600 dark:text-blue-400 font-medium text-xs">{user.name?.split(' ')[0] || 'User'}</span>
+                    <span className="text-blue-600 dark:text-blue-400 font-medium text-xs">{displayName.split(' ')[0]}</span>
                   </div>
                 </div>
               )}
@@ -617,7 +620,8 @@ const Home = ({ user, onAuthClick }) => {
 
 // Main App Component
 function App() {
-  const [user, setUser] = useState(null);
+  const { user } = useAuth();
+  const [_, setUser] = useState(null);
   const [businessProfile, setBusinessProfile] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -638,23 +642,7 @@ function App() {
     initializeTheme();
   }, []);
 
-  // Check for existing authentication on app load
-  useEffect(() => {
-    const authToken = localStorage.getItem('auth_token');
-    const userData = localStorage.getItem('user_data');
-    
-    if (authToken && userData) {
-      try {
-        setUser(JSON.parse(userData));
-        // Set axios default header for authenticated requests
-        axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user_data');
-      }
-    }
-  }, []);
+  // Deprecated local auth removed; Supabase manages session
 
   // Load business profile when user changes
   useEffect(() => {
@@ -666,10 +654,14 @@ function App() {
     setShowAuthModal(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_data');
-    setUser(null);
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      setUser(null);
+    }
   };
 
   const handleAuthClick = () => {
@@ -713,112 +705,38 @@ function App() {
           <Route 
             path="/invoices" 
             element={
-              user ? (
-                <InvoicesPage 
-                  user={user}
-                />
-              ) : (
-                <div className="min-h-screen bg-gray-50 dark:bg-background flex items-center justify-center">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-4">
-                      Please Sign In
-                    </h2>
-                    <p className="text-gray-600 dark:text-muted-foreground mb-8">
-                      You need to be signed in to view your invoices.
-                    </p>
-                    <button
-                      onClick={handleAuthClick}
-                      className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Sign In to Continue
-                    </button>
-                  </div>
-                </div>
-              )
+              <ProtectedRoute>
+                <InvoicesPage user={user} />
+              </ProtectedRoute>
             } 
           />
           <Route 
             path="/create" 
             element={
-              user ? (
-                <CreateInvoice 
-                  user={user} 
-                  selectedTemplate={selectedTemplate}
-                />
-              ) : (
-                <div className="min-h-screen bg-gray-50 dark:bg-background flex items-center justify-center">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-4">
-                      Please Sign In
-                    </h2>
-                    <p className="text-gray-600 dark:text-muted-foreground mb-8">
-                      You need to be signed in to create invoices.
-                    </p>
-                    <button
-                      onClick={handleAuthClick}
-                      className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Sign In to Continue
-                    </button>
-                  </div>
-                </div>
-              )
+              <ProtectedRoute>
+                <CreateInvoice user={user} selectedTemplate={selectedTemplate} />
+              </ProtectedRoute>
             } 
           />
           <Route 
             path="/enhanced-invoices" 
             element={
-              user ? (
-                <EnhancedInvoicesPage 
-                  user={user}
-                />
-              ) : (
-                <div className="min-h-screen bg-gray-50 dark:bg-background flex items-center justify-center">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-4">
-                      Please Sign In
-                    </h2>
-                    <p className="text-gray-600 dark:text-muted-foreground mb-8">
-                      You need to be signed in to manage invoices.
-                    </p>
-                    <button
-                      onClick={handleAuthClick}
-                      className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Sign In to Continue
-                    </button>
-                  </div>
-                </div>
-              )
+              <ProtectedRoute>
+                <EnhancedInvoicesPage user={user} />
+              </ProtectedRoute>
             } 
           />
           <Route 
             path="/business-profile" 
             element={
-              user ? (
-                <BusinessProfile 
-                  user={user}
-                />
-              ) : (
-                <div className="min-h-screen bg-gray-50 dark:bg-background flex items-center justify-center">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-4">
-                      Please Sign In
-                    </h2>
-                    <p className="text-gray-600 dark:text-muted-foreground mb-8">
-                      You need to be signed in to manage your business profile.
-                    </p>
-                    <button
-                      onClick={handleAuthClick}
-                      className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300"
-                    >
-                      Sign In to Continue
-                    </button>
-                  </div>
-                </div>
-              )
+              <ProtectedRoute>
+                <BusinessProfile user={user} />
+              </ProtectedRoute>
             } 
           />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
         
         {/* AI Chatbot */}

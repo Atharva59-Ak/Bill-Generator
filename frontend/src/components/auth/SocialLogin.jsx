@@ -1,74 +1,15 @@
 import React from 'react';
 import { Button } from '../ui/button';
-import axios from 'axios';
+import { supabase } from '../../lib/supabaseClient';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-const API = `${BACKEND_URL}/api`;
-
-const SocialLogin = ({ onAuthSuccess }) => {
-  // Mock functions for social login since we don't have the actual libraries installed
-  const handleGoogleLogin = async () => {
-    try {
-      // In a real implementation, this would use the Google OAuth API
-      // For now, we'll simulate a successful login with mock data
-      
-      // Simulate API response
-      const mockResponse = {
-        data: {
-          access_token: 'mock_google_token',
-          user: {
-            id: 'google_123',
-            name: 'Google User',
-            email: 'user@gmail.com',
-            provider: 'google'
-          }
-        }
-      };
-      
-      // Store authentication data
-      const { access_token, user } = mockResponse.data;
-      localStorage.setItem('auth_token', access_token);
-      localStorage.setItem('user_data', JSON.stringify(user));
-      
-      // Set axios default header for future requests
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-      
-      onAuthSuccess(user);
-    } catch (err) {
-      console.error('Google authentication error:', err);
-    }
-  };
-
-  const handleFacebookLogin = async () => {
-    try {
-      // In a real implementation, this would use the Facebook Login API
-      // For now, we'll simulate a successful login with mock data
-      
-      // Simulate API response
-      const mockResponse = {
-        data: {
-          access_token: 'mock_facebook_token',
-          user: {
-            id: 'facebook_456',
-            name: 'Facebook User',
-            email: 'user@facebook.com',
-            provider: 'facebook'
-          }
-        }
-      };
-      
-      // Store authentication data
-      const { access_token, user } = mockResponse.data;
-      localStorage.setItem('auth_token', access_token);
-      localStorage.setItem('user_data', JSON.stringify(user));
-      
-      // Set axios default header for future requests
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
-      
-      onAuthSuccess(user);
-    } catch (err) {
-      console.error('Facebook authentication error:', err);
-    }
+const SocialLogin = () => {
+  const startOAuth = async (provider) => {
+    await supabase.auth.signInWithOAuth({ 
+      provider, 
+      options: { 
+        redirectTo: window.location.origin + '/auth/callback' 
+      } 
+    });
   };
 
   return (
@@ -84,7 +25,7 @@ const SocialLogin = ({ onAuthSuccess }) => {
       <div className="grid grid-cols-2 gap-3">
         <Button 
           variant="outline" 
-          onClick={handleGoogleLogin}
+          onClick={() => startOAuth('google')}
           className="flex items-center justify-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
@@ -96,13 +37,13 @@ const SocialLogin = ({ onAuthSuccess }) => {
         </Button>
         <Button 
           variant="outline" 
-          onClick={handleFacebookLogin}
+          onClick={() => startOAuth('github')}
           className="flex items-center justify-center gap-2"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
           </svg>
-          Facebook
+          GitHub
         </Button>
       </div>
     </div>
